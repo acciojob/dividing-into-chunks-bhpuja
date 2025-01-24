@@ -1,16 +1,97 @@
+
 <!DOCTYPE html>
-
-<html>
-
+<html lang="en">
 <head>
-	<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Divide Array into Chunks</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    input, button {
+      padding: 10px;
+      margin: 10px 0;
+      width: 100%;
+    }
+    .output {
+      margin-top: 20px;
+    }
+    .subarray {
+      background-color: #f0f8ff;
+      margin: 5px 0;
+      padding: 10px;
+      border-radius: 5px;
+    }
+  </style>
 </head>
-
 <body>
-	<!-- the entire body must be written by student -->
-    <script type="text/javascript" src="./script.js">
-</script>
+  <div class="container">
+    <h1>Divide Array into Chunks</h1>
+    <label for="array">Input Array (comma-separated):</label>
+    <input type="text" id="array" placeholder="e.g., 1, 2, 3, 4, 1, 0, 2, 2">
+    
+    <label for="max-sum">Maximum Sum (n):</label>
+    <input type="number" id="max-sum" placeholder="e.g., 5">
+    
+    <button onclick="divideArray()">Divide into Chunks</button>
+    
+    <div class="output">
+      <h3>Output:</h3>
+      <div id="result"></div>
+    </div>
+  </div>
+  
+  <script>
+    function divideArray() {
+      // Get inputs
+      const arrayInput = document.getElementById("array").value;
+      const maxSum = parseInt(document.getElementById("max-sum").value, 10);
+      
+      // Parse the array
+      const arr = arrayInput.split(",").map(num => parseInt(num.trim(), 10));
+      
+      // Function to divide the array
+      const divide = (arr, n) => {
+        const subarrays = [];
+        let currentSubarray = [];
+        let currentSum = 0;
 
+        for (let num of arr) {
+          if (currentSum + num > n) {
+            subarrays.push(currentSubarray);
+            currentSubarray = [];
+            currentSum = 0;
+          }
+          currentSubarray.push(num);
+          currentSum += num;
+        }
+
+        if (currentSubarray.length > 0) {
+          subarrays.push(currentSubarray);
+        }
+        return subarrays;
+      };
+
+      // Perform division
+      const subarrays = divide(arr, maxSum);
+
+      // Display result
+      const resultDiv = document.getElementById("result");
+      resultDiv.innerHTML = ""; // Clear previous output
+
+      subarrays.forEach(subarray => {
+        const div = document.createElement("div");
+        div.className = "subarray";
+        div.textContent = `[${subarray.join(", ")}]`;
+        resultDiv.appendChild(div);
+      });
+    }
+  </script>
 </body>
-
 </html>
